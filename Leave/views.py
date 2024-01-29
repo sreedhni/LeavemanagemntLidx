@@ -34,7 +34,6 @@ class AdSignInView(FormView):
     form_class=LoginForm
     def post(self,request,*args,**kwargs):
         form=LoginForm(request.POST)
-         
         if form.is_valid():
             uname=form.cleaned_data.get("username")
             pwd=form.cleaned_data.get("password")
@@ -45,7 +44,7 @@ class AdSignInView(FormView):
                 return redirect("admin")
             else:
                 messages.error(request,"invalid credentials")
-                return render(request,"admin.html",{"form":form})
+                return redirect("admin")
             
 
 
@@ -56,10 +55,10 @@ class USignUpView(CreateView):
     form_class=RegstrationForm
     success_url=reverse_lazy("signin-usr")
 
-    def form_valid(self, form):#for sendng succs msg
+    def form_valid(self, form):
         messages.success(self.request,"account created")
         return super().form_valid(form)
-    def form_invalid(self, form): #for sndng error msg
+    def form_invalid(self, form): 
         messages.error(self.request,"account creation failed")
         return super().form_invalid(form)
 
@@ -91,7 +90,6 @@ class EmployeeLeaveCreateView(CreateView):
     form_class=UserLeaveUpdateForm
     success_url=reverse_lazy("user")
 
-# ecs=[signin_required,is_user]
 
 class EmployeeLeaveUpdateView(UpdateView):
     template_name="uleave_edit.html"
@@ -99,14 +97,12 @@ class EmployeeLeaveUpdateView(UpdateView):
     form_class=UserLeaveUpdateForm
     success_url=reverse_lazy("user")
 
-# ecs=[signin_required,is_user]
 
 def remove_leaveview(request,*args,**kwargs):
     id=kwargs.get("pk")
     LeaveRequest.objects.filter(id=id).delete()
     return redirect("user")
 
-# ecs=[signin_required,is_user]
 
 class ULeaveListView(ListView):
     template_name="user.html"
@@ -115,7 +111,6 @@ class ULeaveListView(ListView):
     success_url=reverse_lazy("user")
 
 
-# decs=[signin_required,is_admin]
 
 class ALeaveListView(ListView):
     template_name="admin.html"
@@ -124,7 +119,6 @@ class ALeaveListView(ListView):
     success_url=reverse_lazy("admin")
 
 
-# decs=[signin_required,is_admin]
 
 class ALeaveUpdateView(UpdateView):
     template_name="aleave_edit.html"
@@ -132,7 +126,6 @@ class ALeaveUpdateView(UpdateView):
     form_class=AdminLeaveEditForm
     success_url=reverse_lazy("admin")
 
-# @signin_required
 def sign_outview(request,*args,**kwargs):
     logout(request)
     return redirect("signin-admin")

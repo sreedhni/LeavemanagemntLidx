@@ -1,7 +1,6 @@
 from django import forms
 from Leave.models import Employee,LeaveRequest
  
-from django.contrib.auth.forms import UserCreationForm
 
 
 class RegstrationForm(forms.ModelForm):

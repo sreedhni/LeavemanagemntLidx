@@ -12,9 +12,9 @@ class Employee(models.Model):
         ('user', 'User')
     ]
     role = models.CharField(max_length=10, choices=role_choices)
-    def __str__(self) -> str:
+    def __str__(self):
         return self.username
-
+    
 
 class LeaveRequest(models.Model):
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
